@@ -17,12 +17,12 @@ def three_pixel_error(lbranch, rbranch, targets):
     loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=targets, logits=prod_flatten), name='loss')
     return prod_flatten, loss
 
-def create(limage, rimage, targets, net_type='win37_dep9'):
+def create(limage, rimage, targets, net_type, kernel_c):
 	is_training = tf.placeholder(tf.bool, [], name='is_training')
 	with tf.name_scope('siamese_' + net_type):
 		if net_type == 'win37_dep9':
-			lbranch = net37.create_network(limage, is_training, reuse=False)
-			rbranch = net37.create_network(rimage, is_training, reuse=True)
+			lbranch = net37.create_network(limage, is_training,kernel_c, reuse=False)
+			rbranch = net37.create_network(rimage, is_training, kernel_c, reuse=True)
 
 		elif net_type == 'win19_dep9':
 			lbranch = net19.create_network(limage, is_training, reuse=False)

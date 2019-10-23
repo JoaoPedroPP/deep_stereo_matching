@@ -27,6 +27,8 @@ flags.DEFINE_string('phase', 'train', 'train or evaluate')
 
 flags.DEFINE_string('load_model_dir', 'train_win37', 'Trained network dir')
 
+flags.DEFINE_integer('kernel_c', 5, 'kernel size of convolution')
+
 FLAGS = flags.FLAGS
 
 np.random.seed(123)
@@ -62,7 +64,7 @@ def train():
 		rimage = tf.placeholder(tf.float32, [None, FLAGS.patch_size, FLAGS.patch_size + FLAGS.disp_range - 1, num_channels], name='rimage')
 		targets = tf.placeholder(tf.float32, [None, FLAGS.disp_range], name='targets')
 
-		snet = nf.create(limage, rimage, targets, FLAGS.net_type)
+		snet = nf.create(limage, rimage, targets, FLAGS.net_type, FLAGS.kernel_c)
 
 		loss = snet['loss']
 		train_step = snet['train_step']
